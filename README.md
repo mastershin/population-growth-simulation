@@ -20,7 +20,7 @@ Death Rate Data
 [http://www.cdc.gov/nchs/data/dvs/LEWK3_2009.pdf]http://www.cdc.gov/nchs/data/dvs/LEWK3_2009.pdf
 
 ===========================================================================================
-Deployed to [http://populationsimulator.appspot.com](http://populationsimulator.appspot.com)
+Deployed to [http://population-growth-simulation.appspot.com](http://population-growth-simulation.appspot.com)
 
 Note: This was my final class project for
    MSE 542 Artificial Life Programming, Spring 2014 @ University of Advancing Technology, Tempe, Arizona.
