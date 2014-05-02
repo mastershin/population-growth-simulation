@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+Population Simulator
+
+Jae Y Shin
+Email: mastershin@gmail.com
+LinkedIn: https://www.linkedin.com/in/jaeyulshin
+
+Main Algorithm: 
+1. Use birth rate and death rate to simulate population growth simulation. 
+2. 50% chance of male/female.
+3. Redish Colors are female. Bluish colors are male.
+
+Birth rate data used:
+--------------------
+2009 Data
+15	    15-19	20-24	25-29	30-34	35-39	40-44	45-49
+0.12%	8.83%	21.39%	31.55%	37.74%	30.09%	9.60%	0.80%	Avg=0.18	Sigma=0.146348951
+
+Death Rate Data
+---------------
+[http://www.cdc.gov/nchs/data/dvs/LEWK3_2009.pdf]http://www.cdc.gov/nchs/data/dvs/LEWK3_2009.pdf
+
+===========================================================================================
+Deployed to [http://populationsimulator.appspot.com](http://populationsimulator.appspot.com)
+
+Note: This was my final class project for
+   MSE 542 Artificial Life Programming, Spring 2014 @ University of Advancing Technology, Tempe, Arizona.
+
+Uses d3.js library & 100% Javascript.
+
+-->
+<html>
+    
+    <head>
+        <style type='text/css'>
+            html, body {
+                height: 100%;
+                margin: 5px;
+                padding: 5px
+            }
+            #d3svg {
+                height: 700px;
+                border: 1px solid;
+                background-color: #f0f0f0;
+            }
+            #slider-maxNodes {
+                width: 180px;
+            }
+            #slider-interval {
+                width: 180px;
+            }
+            #slider-deathRate {
+                width: 180px;
+            }
+        </style>
+        <meta charset="utf-8">
+        <title>Population Growth Simulation Project</title>
+        <link rel="stylesheet" href="css/app-d3.css">
+        <!-- Local <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
+  <script src="js/libs/jquery-2.1.0.min.js"></script>
+  <script src="js/libs/jquery-ui-1.10.4.custom.min.js"></script>
+  <script src="js/libs/d3.v3.min.js"></script>
+-->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css"
+        />
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
+        <script src="js/colorbrewer.js"></script>
+    </head>
+    
+    <body>
+        <strong>Population Growth Simulation v1.4</strong>- using d3 library
+        <br/>It's possible for population to be extinct. In that case, just click anywhere
+        to create a "life". (Male = blue, Female=Red)
+        <br/>
+        <br/>Jae Y Shin, Email: mastershin at gmail.com,
+        <a href="https://www.linkedin.com/in/jaeyulshin">Linked In</a>
+        <br/>University of Advancing Technology
+        <br/>
+        <!-- <input type='button' id='print' value='Print'/>
+        <textarea id='output' rows='2' cols='80'></textarea>
+        <br/>-->
+        <div style="width: 100%;">
+            <div style="float: left; width: 200px;">
+                <label for="population">Current Population:</label>
+                <div id="population"></div>
+                <br/>
+            </div>
+            <div style="float: left; width: 200px;">
+                <!-- Max Nodes -->
+                <label for="maxNodes">Max # of Nodes:</label>
+                <input type="text" id="maxNodes" style="border:0; color:#f6931f; font-weight:bold;">
+                <br/>
+                <div id="slider-maxNodes"></div>
+            </div>
+            <div style="float: left; width: 200px;">
+                <!-- Speed -->
+                <label for="interval">Animation Interval (ms):</label>
+                <input type="text" id="interval" style="border:0; color:#f6931f; font-weight:bold;">
+                <br/>
+                <div id="slider-interval"></div>
+            </div>
+            <div style="float: left; width: 500px;">
+                <!-- Death Rate -->
+                <label for="deathRate">Mortality Multiplier - rate=multiplyer * (a*exp^(b*(age+c))+d). (1=normal):</label>
+                <input
+                type="text" id="deathRate" style="border: 0; color:#f6931f; font-weight:bold;">
+                    <br/>
+                    <div id="slider-deathRate"></div>
+            </div>
+        </div>
+        <div id="d3svg"></div>
+    </body>
+    <script src="js/app-d3.js"></script>
+    <script>
+        $(function() {
+
+
+            // Max Nodes
+
+            $("#slider-maxNodes").slider({
+                range: "min",
+                value: 200,
+                min: 1,
+                max: 1000,
+                slide: function(event, ui) {
+                    $("#maxNodes").val(ui.value);
+                }
+            });
+            $("#maxNodes").val($("#slider-maxNodes").slider("value"));
+
+
+            // Speed (Interval)
+            $("#slider-interval").slider({
+                range: "min",
+                value: 250,
+                min: 50,
+                max: 5000,
+                slide: function(event, ui) {
+                    $("#interval").val(ui.value);
+                }
+            });
+            $("#interval").val($("#slider-interval").slider("value"));
+
+            // Death rate (100 = normal)
+            $("#slider-deathRate").slider({
+                range: "min",
+                value: 1,
+                min: 1,
+                max: 500,
+                slide: function(event, ui) {
+                    $("#deathRate").val(ui.value);
+                }
+            });
+            $("#deathRate").val($("#slider-deathRate").slider("value"));
+
+
+            $('#print').click(function() {
+                printNodesAndEdges()
+            });
+
+
+        });
+    </script>
+
+</html>
